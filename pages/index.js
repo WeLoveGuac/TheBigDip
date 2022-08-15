@@ -6,8 +6,8 @@ const Index = () => {
   return (
     <Layout
       // type your page title and page description.
-      title="xkartracing"
-      description="xkartracing"
+      title="Big Dip"
+      description="Big Dip"
     >
       <Dip></Dip>
     </Layout>

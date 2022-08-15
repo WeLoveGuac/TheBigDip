@@ -310,7 +310,7 @@ const Header = () => {
   const drawer = (
     <>
       <Box>
-        <Link target="_blank" href="https://xkartracing.com/">
+        <Link target="_blank" href="/">
           {/* <Typography className={classes.logo}><img height={50} src="XKart Logo.png"></img></Typography> */}
         </Link>
       </Box>
