@@ -1,0 +1,306 @@
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  justify-content: center;
+}
+
+.page-link {
+  border: none;
+  position: relative;
+  display: block;
+  color: #6B7280;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.page-link:focus {
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-link {
+    transition: none;
+  }
+}
+
+.page-link:hover {
+  z-index: 2;
+  color: #3DC751;
+  background-color: #24323f;
+  border-color: #dee2e6;
+}
+
+.page-link:focus {
+  z-index: 3;
+  color: #3DC751;
+  background-color: #e9ecef;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.page-item:not(:first-child) .page-link {
+  margin-left: -1px;
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #3DC751;
+  border-top: 2px solid #3DC751;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.page-link {
+  padding: 16px;
+}
+
+.page-item:first-child .page-link {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.page-item:last-child .page-link {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.pagination-lg .page-link {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+}
+
+.pagination-lg .page-item:first-child .page-link {
+  border-top-left-radius: 0.3rem;
+  border-bottom-left-radius: 0.3rem;
+}
+
+.pagination-lg .page-item:last-child .page-link {
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+
+.pagination-sm .page-link {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.pagination-sm .page-item:first-child .page-link {
+  border-top-left-radius: 0.2rem;
+  border-bottom-left-radius: 0.2rem;
+}
+
+.pagination-sm .page-item:last-child .page-link {
+  border-top-right-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+}
+
+#container {
+  height: 400px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+#container #dino {
+  height: 70px;
+  width: 70px;
+  position: absolute;
+  bottom: 28px;
+  left: 20px;
+}
+
+#container #dino img {
+  /* height: 70px; */
+  width: 70px;
+}
+
+.dinoActive {
+  animation: animateDino 0.5s linear infinite;
+}
+
+@keyframes animateDino {
+
+  0%,
+  100% {
+    bottom: 28px;
+  }
+
+  45%,
+  55% {
+    bottom: 160px;
+  }
+}
+
+#container #block {
+  height: 80px;
+  width: 125px;
+  position: absolute;
+  bottom: 36px;
+  right: -20px;
+}
+
+#container #block img {
+  height: 72px;
+  /* width: 125px; */
+}
+
+.blockActive {
+  animation: blockAnimate 1s linear infinite;
+}
+
+@keyframes blockAnimate {
+  0% {
+    right: -125px;
+  }
+
+  100% {
+    right: 100%;
+  }
+}
+
+#container #road {
+  height: 35px;
+  width: 2500px;
+  position: absolute;
+  bottom: 42px;
+}
+
+#container #road img {
+  /* height: 30px; */
+  width: 2500px;
+  position: absolute;
+  left: 0;
+  animation: none;
+}
+
+@keyframes roadAnimate {
+  0% {
+    left: 0px;
+  }
+
+  100% {
+    left: -500px;
+  }
+}
+
+#container #cloud {
+  height: 80px;
+  width: 100%;
+  border-radius: 40px;
+  position: absolute;
+  top: 30px;
+}
+
+#container #cloud img {
+  width: 2000px;
+  position: absolute;
+  left: -2000px;
+  animation: none;
+}
+
+@keyframes cloudAnimate {
+  0% {
+    left: -2000px;
+  }
+
+  100% {
+    left: 100%;
+  }
+}
+
+#score {
+  color: #292a2c;
+  height: auto;
+  width: auto;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-family: 'Press Start 2P';
+}
+
+#gameOver {
+  display: none;
+  font-size: 3rem;
+  position: absolute;
+  top: calc(35%);
+  width: 500px;
+  text-align: center;
+  font-family: 'Press Start 2P';
+  height: 80px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  color: #525252;
+}
+
+#gameTutorial {
+  display: block;
+  font-size: 2rem;
+  position: absolute;
+  top: calc(35%);
+  width: 500px;
+  text-align: center;
+  font-family: 'Press Start 2P';
+  height: 80px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  color: #525252;
+}
+
+canvas {
+  display: block;
+}
+
+#demo {
+  display: flex;
+  justify-content: center;
+}
+
+
+.picker {
+  position: relative;
+}
+
+.swatch {
+  width: 70px;
+  height: 40px;
+  border-radius: 8px;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  border-radius: 9px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lg-react-element {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  width: calc(100% + 40px);
+  margin: -20px;
+}
+
+.lg-react-element a {
+  flex-grow: 0;
+  max-width: 33.333333%;
+  flex-basis: 33.333333%;
+  padding: 20px;
+}
