@@ -304,3 +304,7 @@ canvas {
   flex-basis: 33.333333%;
   padding: 20px;
 }
+
+.web3modal-modal-lightbox {
+  z-index: 1000 !important;
+}
