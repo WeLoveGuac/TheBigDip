@@ -24,14 +24,14 @@ const theme = createTheme({
   },
   typography: {
     h1: {
-      fontFamily: "Poppins",
+      fontFamily: "BreviaBold",
       fontSize: "18px",
       lineHeight: "30px",
       fontWeight: "500",
       fontStyle: "normal"
     },
     h2: {
-      fontFamily: "Poppins",
+      fontFamily: "BreviaBold",
       fontSize: "18px",
       lineHeight: "23px",
       fontWeight: "800",
@@ -41,7 +41,7 @@ const theme = createTheme({
       fontWeight: 500,
     },
     subtitle1: {
-      fontFamily: "Poppins",
+      fontFamily: "BreviaBold",
       fontSize: "16px",
       lineHeight: "20.8px",
       fontWeight: "400",
@@ -55,7 +55,7 @@ const theme = createTheme({
   overrides: {
     MuiTypography: {
       body1: {
-        fontFamily: "Poppins",
+        fontFamily: "BreviaBold",
       }
     },
     MuiAppBar: {
@@ -68,7 +68,7 @@ const theme = createTheme({
     },
     MuiButton: {
       root: {
-        fontFamily: "Poppins",
+        fontFamily: "BreviaBold",
         border: '3px solid #000f47',
         minWidth: '150px',
         fontWeight: 'bold'

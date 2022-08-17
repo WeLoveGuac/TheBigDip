@@ -64,7 +64,7 @@ const Layout = ({ children, title, description, ogImage, url }) => {
             overflow-x: hidden;
             padding: 0 !important;
             color: #000 !important;
-            font-family: "Poppins", sans-serif;
+            font-family: "BreviaBold", sans-serif;
           }
           #__next {
             min-height: 100vh;

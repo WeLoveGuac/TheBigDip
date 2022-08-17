@@ -1,20 +1,19 @@
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { Container, Typography, Box, Grid, Button, Backdrop, Modal, Fade, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@material-ui/core";
+import { Container, Typography, Box, Button, Backdrop, Modal, Fade, Radio, FormGroup, Checkbox, FormControlLabel, FormControl } from "@material-ui/core";
 import { useSelector } from 'react-redux';
-import clsx from "clsx";
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const CustomRadio = withStyles({
+const CustomCheckbox = withStyles({
   root: {
-    color: "#c5cab8",
+    color: '#c5cab8',
     '&$checked': {
-      color: "#fff9ad",
+      color: '#fff9ad',
     },
   },
   checked: {},
-})((props) => <Radio color="default" {...props} />);
+})((props) => <Checkbox color="default" {...props} />);
 
 const useStyles = makeStyles((theme) => ({
   dip: {
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: '50px',
+    marginLeft: '60px',
     "&:first-child": {
       marginLeft: '0px',
     },
@@ -49,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title: {
-    fontFamily: "Poppins",
+    fontFamily: "BreviaBold",
     lineHeight: "30px",
     fontSize: '50px',
     fontWeight: "500",
@@ -88,6 +87,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#001446",
   },
   chipTitle: {
+    marginTop: '20px',
     fontWeight: "bold",
     fontSize: "25px",
     textTransform: 'uppercase',
@@ -129,28 +129,69 @@ const Dip = () => {
     }
   ]
 
-  const [value, setValue] = useState(null); // choosen chip number
+  const [checkList, setCheckList] = useState([]); // array for checked ones
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  const [dipped, setDipped] = useState(false)
+  const [dipped, setDipped] = useState(false) // dipped state
 
   const dipChip = () => {
-    value && setDipped(true);
-    !value && toast.error(`Choose one Dip!`);
+    checkList.length && setDipped(true);
+    !checkList.length && toast.error(`Choose one Dip!`);
   }
 
-  const [selectedDip, setSelectedDip] = useState();
+  const tasty = () => {
+    setCheckboxArr([
+      {
+        id: 1,
+        name: "Chip #1"
+      },
+      {
+        id: 2,
+        name: "Chip #2"
+      }
+    ])
+    setDipped(false);
+    setCheckList([]);
+  }
+
+  const [selectedDip, setSelectedDip] = useState(); // selected dip category
 
   const chooseDip = (event) => {
+    if (!address) {
+      toast.error(`Connect your wallet!`)
+      return;
+    }
+
     event.preventDefault();
-    setSelectedDip(event.currentTarget.id)
-    setOpen(true)
-    setValue(null);
-    setDipped(false);
+    setSelectedDip(event.currentTarget.id);
+    setOpen(true);
   }
+
+  const [checkboxArr, setCheckboxArr] = useState([
+    {
+      id: 1,
+      name: "Chip #1"
+    },
+    {
+      id: 2,
+      name: "Chip #2"
+    },
+    {
+      id: 3,
+      name: "Chip #3"
+    }
+  ]);
+
+  const handleChange = e => {
+    if (e.target.checked === true) {
+      setCheckList([...checkList, Number(e.target.value)]);
+    } else {
+      const selectedAcc = checkList.filter(a => {
+        if (a === Number(e.target.value)) return false;
+        return true;
+      });
+      setCheckList([...selectedAcc]);
+    }
+  };
 
   return (
     <Container>
@@ -183,12 +224,23 @@ const Dip = () => {
                 <Typography className={classes.selectModalTitle}>
                   Please select each chip you would like to dip in <span style={{ textTransform: 'capitalize' }}>{selectedDip}</span>
                 </Typography>
-                <FormControl component="fieldset">
-                  <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-                    <FormControlLabel value="873" control={<CustomRadio />} label={<Typography className={classes.customLabel}>Chip #873</Typography>} />
-                    <FormControlLabel value="44" control={<CustomRadio />} label={<Typography className={classes.customLabel}>Chip #44</Typography>} />
-                    <FormControlLabel value="1222" control={<CustomRadio />} label={<Typography className={classes.customLabel}>Chip #1222</Typography>} />
-                  </RadioGroup>
+                <FormControl component="fieldset" className={classes.formControl}>
+                  <FormGroup>
+                    {checkboxArr.map(elem => {
+                      return <FormControlLabel
+                        key={elem.id}
+                        control={
+                          <CustomCheckbox
+                            value={elem.id}
+                            onChange={e => handleChange(e)}
+                            checked={
+                              checkList.lastIndexOf(Number(elem.id)) >= 0 ? true : false
+                            }
+                            name={elem.name} />
+                        }
+                        label={elem.name} />
+                    })}
+                  </FormGroup>
                 </FormControl>
                 <Box mt="20px" display='flex' justifyContent='center'>
                   <Button variant="contained" color="primary" onClick={dipChip}>
@@ -199,13 +251,13 @@ const Dip = () => {
             ) : (
               <>
                 <Typography className={classes.selectModalTitle}>
-                  You dipped chip #{value};
+                  You dipped chip #{checkList};
                 </Typography>
                 <Typography className={classes.selectModalTitle}>
                   You have two more chips available to dip this session
                 </Typography>
                 <Box mt="20px" display='flex' justifyContent='center'>
-                  <Button variant="contained" color="primary" onClick={() => setDipped(false)}>
+                  <Button variant="contained" color="primary" onClick={tasty}>
                     Tasty
                   </Button>
                 </Box>
