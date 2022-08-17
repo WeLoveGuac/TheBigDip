@@ -135,7 +135,7 @@ const Dip = () => {
 
   const dipChip = () => {
     checkList.length && setDipped(true);
-    !checkList.length && toast.error(`Choose one Dip!`);
+    !checkList.length && toast.error(`Choose at least one Dip!`);
   }
 
   const tasty = () => {
@@ -251,7 +251,7 @@ const Dip = () => {
             ) : (
               <>
                 <Typography className={classes.selectModalTitle}>
-                  You dipped chip #{checkList};
+                  You dipped chip #{checkList.join(', ')};
                 </Typography>
                 <Typography className={classes.selectModalTitle}>
                   You have two more chips available to dip this session
