@@ -46,6 +46,20 @@ const useStyles = makeStyles((theme) => ({
       WebkitTransform: 'scale(2)',
       transform: 'scale(2)',
     },
+    [theme.breakpoints.down("xs")]: {
+      "&:hover img:nth-child(1)": {
+        zIndex: 2,
+        WebkitTransform: 'scale(1)',
+        transform: 'scale(1)',
+      },
+      "&:hover img:nth-child(2)": {
+        zIndex: 1,
+        WebkitTransform: 'scale(1)',
+        transform: 'scale(1)',
+      },
+      marginLeft: '0px',
+      marginBottom: '50px'
+    }
   },
   title: {
     fontFamily: "BreviaBold",
@@ -54,7 +68,12 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "500",
     color: '#fff9ad',
     marginTop: '100px',
-    textAlign: 'center'
+    textAlign: 'center',
+    [theme.breakpoints.down("xs")]: {
+      marginTop: '70px',
+      fontSize: '30px',
+      lineHeight: '1.3'
+    }
   },
   modal: {
     display: 'flex',
@@ -72,7 +91,13 @@ const useStyles = makeStyles((theme) => ({
     outline: 0,
     display: 'flex',
     justifyContent: 'space-between',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    [theme.breakpoints.down("xs")]: {
+      width: "350px",
+      minHeight: '300px',
+      border: '2px solid #000f47',
+      padding: "20px",
+    }
   },
   selectModalTitle: {
     color: '#fff9ad',
@@ -91,7 +116,20 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     fontSize: "25px",
     textTransform: 'uppercase',
-    lineHeight: "1.5"
+    lineHeight: "1.5",
+    [theme.breakpoints.down("xs")]: {
+      marginTop: '0px',
+    }
+  },
+  mainContainer: {
+    display: "flex",
+    justifyContent: 'center',
+    marginTop: "50px",
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: 'column',
+      justifyContent: 'center',
+    }
   }
 }));
 
@@ -106,6 +144,24 @@ const Dip = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setTimeout(() => {
+      setCheckboxArr([
+        {
+          id: 1,
+          name: "Chip #1"
+        },
+        {
+          id: 2,
+          name: "Chip #2"
+        },
+        {
+          id: 3,
+          name: "Chip #3"
+        }
+      ])
+      setDipped(false);
+      setCheckList([]);
+    }, 1000);
   };
 
   const imgArr = [
@@ -196,7 +252,7 @@ const Dip = () => {
   return (
     <Container>
       <Typography className={classes.title}>CHOOSE YOUR DIP</Typography>
-      <Box display="flex" justifyContent='center' mt="50px">
+      <Box className={classes.mainContainer}>
         {imgArr.map((elem, index) => {
           return <Box key={index} className={classes.section} id={elem.id} onClick={chooseDip}>
             <img className={classes.dip} src={elem.url1}></img>

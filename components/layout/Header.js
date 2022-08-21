@@ -154,6 +154,7 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     background: "#974a26",
+    zIndex: 1000,
     boxShadow: "rgb(0 0 0 / 2%) 0px 0px 0px 1px, rgb(0 0 0 / 5%) 5px 5px 15px, rgb(0 0 0 / 5%) -5px -5px 15px",
     borderBottom: "1px solid rgba(255, 255, 255, 0.33)"
   }
@@ -309,11 +310,11 @@ const Header = () => {
   );
   const drawer = (
     <>
-      <Box>
-        <Link target="_blank" href="/">
-          {/* <Typography className={classes.logo}><img height={50} src="XKart Logo.png"></img></Typography> */}
-        </Link>
-      </Box>
+      {/* <Box>
+        <Link target="_blank" href="/"> */}
+      {/* <Typography className={classes.logo}><img height={50} src="XKart Logo.png"></img></Typography> */}
+      {/* </Link>
+      </Box> */}
       <SwipeableDrawer
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
@@ -339,32 +340,6 @@ const Header = () => {
               </Button>
             )}
           </Box>
-          {/* {path.map(({ name, link }) => (
-            <ListItem
-              key={link}
-              divider
-              button
-              onClick={() => {
-                setOpenDrawer(false);
-              }}
-            >
-              <ListItemText disableTypography>
-                <Link href={link}>
-                  <Typography
-                    style={{
-                      color:
-                        router.pathname === link
-                          ? "primary"
-                          : "rgb(107 107 107)",
-                      fontWeight: router.pathname === link && "bold",
-                    }}
-                  >
-                    {name}
-                  </Typography>
-                </Link>
-              </ListItemText>
-            </ListItem>
-          ))} */}
         </List>
       </SwipeableDrawer>
       <IconButton
