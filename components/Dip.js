@@ -1,9 +1,11 @@
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Container, Typography, Box, Button, Backdrop, Modal, Fade, Radio, FormGroup, Checkbox, FormControlLabel, FormControl } from "@material-ui/core";
 import { useSelector } from 'react-redux';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import abi from '../public/config/abi.json';
+import Config from '../public/config/Config.json';
 
 const CustomCheckbox = withStyles({
   root: {
@@ -130,6 +132,10 @@ const useStyles = makeStyles((theme) => ({
       flexDirection: 'column',
       justifyContent: 'center',
     }
+  },
+  formControl: {
+    maxHeight: '150px',
+    overflow: 'auto'
   }
 }));
 
@@ -137,28 +143,18 @@ const Dip = () => {
   const classes = useStyles();
   const {
     address,
-    balance
+    balance,
+    web3
   } = useSelector(state => state.ConnectWallet);
 
   const [open, setOpen] = useState(false);
 
+  const { ethers } = require("ethers");
+
   const handleClose = () => {
     setOpen(false);
     setTimeout(() => {
-      setCheckboxArr([
-        {
-          id: 1,
-          name: "Chip #1"
-        },
-        {
-          id: 2,
-          name: "Chip #2"
-        },
-        {
-          id: 3,
-          name: "Chip #3"
-        }
-      ])
+      setCheckboxArr([])
       setDipped(false);
       setCheckList([]);
     }, 1000);
@@ -190,21 +186,48 @@ const Dip = () => {
   const [dipped, setDipped] = useState(false) // dipped state
 
   const dipChip = () => {
-    checkList.length && setDipped(true);
-    !checkList.length && toast.error(`Choose at least one Dip!`);
+    if (!checkList.length) {
+      toast.error(`Choose at least one Dip!`);
+      return;
+    }
+
+    async function fetchData() {
+      let provider = new ethers.providers.Web3Provider(web3.currentProvider);
+      const _signer = provider.getSigner();
+
+      const contract = new ethers.Contract(Config.CONTRACT_ADDRESS, abi, _signer)
+      const battleStatus = await contract.battleStatus();
+      if (battleStatus) {
+        const transaction = await contract.scoop(Array(checkList.length).fill(Config.GUAC_ADDRESS), checkList);
+        const finishTxn = await transaction.wait();
+        setDipped(true);
+      } else {
+        toast.error('Scoop is not available now');
+      }
+    }
+
+    fetchData();
   }
 
   const tasty = () => {
-    setCheckboxArr([
-      {
-        id: 1,
-        name: "Chip #1"
-      },
-      {
-        id: 2,
-        name: "Chip #2"
-      }
-    ])
+    async function fetchData() {
+      let provider = new ethers.providers.Web3Provider(web3.currentProvider);
+      const _signer = provider.getSigner();
+      const contract = new ethers.Contract(Config.CONTRACT_ADDRESS, abi, _signer)
+
+      const availableTokenIds = await contract.availableTokensOfOwner(address);
+      let availableTokens = []
+      availableTokenIds.map(e => {
+        e != 0 && availableTokens.push({
+          id: parseInt(e),
+          name: `Chip #${parseInt(e)}`
+        })
+      })
+      setCheckboxArr(availableTokens);
+    }
+
+    fetchData();
+
     setDipped(false);
     setCheckList([]);
   }
@@ -220,22 +243,27 @@ const Dip = () => {
     event.preventDefault();
     setSelectedDip(event.currentTarget.id);
     setOpen(true);
+
+    async function fetchData() {
+      let provider = new ethers.providers.Web3Provider(web3.currentProvider);
+      const _signer = provider.getSigner();
+      const contract = new ethers.Contract(Config.CONTRACT_ADDRESS, abi, _signer)
+
+      const availableTokenIds = await contract.availableTokensOfOwner(address);
+      let availableTokens = []
+      availableTokenIds.map(e => {
+        e != 0 && availableTokens.push({
+          id: parseInt(e),
+          name: `Chip #${parseInt(e)}`
+        })
+      })
+      setCheckboxArr(availableTokens);
+    }
+
+    fetchData();
   }
 
-  const [checkboxArr, setCheckboxArr] = useState([
-    {
-      id: 1,
-      name: "Chip #1"
-    },
-    {
-      id: 2,
-      name: "Chip #2"
-    },
-    {
-      id: 3,
-      name: "Chip #3"
-    }
-  ]);
+  const [checkboxArr, setCheckboxArr] = useState([]);
 
   const handleChange = e => {
     if (e.target.checked === true) {
@@ -281,22 +309,20 @@ const Dip = () => {
                   Please select each chip you would like to dip in <span style={{ textTransform: 'capitalize' }}>{selectedDip}</span>
                 </Typography>
                 <FormControl component="fieldset" className={classes.formControl}>
-                  <FormGroup>
-                    {checkboxArr.map(elem => {
-                      return <FormControlLabel
-                        key={elem.id}
-                        control={
-                          <CustomCheckbox
-                            value={elem.id}
-                            onChange={e => handleChange(e)}
-                            checked={
-                              checkList.lastIndexOf(Number(elem.id)) >= 0 ? true : false
-                            }
-                            name={elem.name} />
-                        }
-                        label={elem.name} />
-                    })}
-                  </FormGroup>
+                  {checkboxArr.map(elem => {
+                    return <FormControlLabel
+                      key={elem.id}
+                      control={
+                        <CustomCheckbox
+                          value={elem.id}
+                          onChange={e => handleChange(e)}
+                          checked={
+                            checkList.lastIndexOf(Number(elem.id)) >= 0 ? true : false
+                          }
+                          name={elem.name} />
+                      }
+                      label={elem.name} />
+                  })}
                 </FormControl>
                 <Box mt="20px" display='flex' justifyContent='center'>
                   <Button variant="contained" color="primary" onClick={dipChip}>
@@ -310,7 +336,7 @@ const Dip = () => {
                   You dipped chip #{checkList.join(', ')};
                 </Typography>
                 <Typography className={classes.selectModalTitle}>
-                  You have two more chips available to dip this session
+                  You might have more chips available to dip this session
                 </Typography>
                 <Box mt="20px" display='flex' justifyContent='center'>
                   <Button variant="contained" color="primary" onClick={tasty}>
