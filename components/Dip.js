@@ -276,7 +276,7 @@ const Dip = () => {
   const [bal, setBal] = useState([]);
 
   const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return x && x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   useEffect(() => {
@@ -334,7 +334,9 @@ const Dip = () => {
             <img className={classes.dip} src={elem.url1}></img>
             <img className={classes.bowl} src={elem.url2}></img>
             <Typography className={classes.chipTitle} style={{ color: elem.color }}>{elem.id}</Typography>
-            <Typography className={classes.chipTitle} style={{ color: elem.color, textAlign: 'center', textTransform: 'lowercase', fontSize: '18px', fontStyle: 'italic' }}>{numberWithCommas(renderSwitch(elem.id))}/69,420 {elem.id}</Typography>
+            {renderSwitch(elem.id) && (
+              <Typography className={classes.chipTitle} style={{ color: elem.color, textAlign: 'center', textTransform: 'lowercase', fontSize: '18px', fontStyle: 'italic' }}>{numberWithCommas(renderSwitch(elem.id))}/69,420 {elem.id}</Typography>
+            )}
           </Box>
         })}
       </Box>
