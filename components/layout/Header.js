@@ -97,11 +97,17 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
   },
   link: {
+    fontSize: '27px !important',
     padding: "30px 0px 30px 0px",
-    color: "#245245",
+    color: "#d29f4d",
+    textTransform: 'uppercase',
+    fontStyle: 'italic',
     "&:hover": {
-      color: theme.palette.info.main,
+      color: "#fff",
     },
+    [theme.breakpoints.down("xs")]: {
+      padding: "10px 0px 10px 0px",
+    }
   },
   connectBtn: {
     color: "#fff",
@@ -263,12 +269,17 @@ const Header = () => {
 
   const tabs = (
     <>
-      <Box>
-        <Grid container spacing={4}>
-          {path.map(({ name, link }) => (
-            <Grid item key={link}>
-              {name == 'Gallery' ? (
-                <Link href={link} target="_blank">
+      <Box display='flex' alignItems='center'>
+        <Box mr={4}>
+          <Link target="_blank" href="https://www.weloveguac.org/">
+            <Typography className={classes.logo}><img height={50} src="logo-chip.png"></img></Typography>
+          </Link>
+        </Box>
+        <Box>
+          <Grid container spacing={4}>
+            {path.map(({ name, link }) => (
+              <Grid item key={link}>
+                <Link target="_blank" href={link} style={{ textDecoration: "none", cursor: "pointer" }}>
                   <Typography
                     className={classes.link}
                     variant="h1"
@@ -276,19 +287,10 @@ const Header = () => {
                     {name}
                   </Typography>
                 </Link>
-              ) : (
-                <Linking style={{ textDecoration: "none", cursor: "pointer" }} to={link} duration={1000} spy={true} smooth={true}>
-                  <Typography
-                    className={classes.link}
-                    variant="h1"
-                  >
-                    {name}
-                  </Typography>
-                </Linking>
-              )}
-            </Grid>
-          ))}
-        </Grid>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Box>
       <Box display="flex" alignItems="center" style={{ paddingRight: "40px" }}>
         {address ? (
@@ -310,11 +312,30 @@ const Header = () => {
   );
   const drawer = (
     <>
-      {/* <Box>
-        <Link target="_blank" href="/"> */}
-      {/* <Typography className={classes.logo}><img height={50} src="XKart Logo.png"></img></Typography> */}
-      {/* </Link>
-      </Box> */}
+      <Box display='flex' alignItems='center'>
+        <Box mr={5}>
+          <Link target="_blank" href="https://www.weloveguac.org/">
+            <Typography className={classes.logo}><img height={50} src="logo-chip.png"></img></Typography>
+          </Link>
+        </Box>
+        <Box>
+          <Grid container spacing={4}>
+            {path.map(({ name, link }) => (
+              <Grid item key={link}>
+                <Link target="_blank" href={link} style={{ textDecoration: "none", cursor: "pointer" }}>
+                  <Typography
+                    className={classes.link}
+                    variant="h1"
+                  >
+                    {name}
+                  </Typography>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Box>
+
       <SwipeableDrawer
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}

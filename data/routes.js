@@ -2,7 +2,7 @@
 // and make the file in the page folder.
 
 export const routes = [
-  // { name: "Draw (mint)", link: "draw" },
+  { name: "Opensea", link: "https://opensea.io/collection/thebluechips" },
   // { name: "Merch", link: "merch" },
   // { name: "Funky Fusion", link: "funky" },
   // { name: "Froggy Arena", link: "froggy" },
