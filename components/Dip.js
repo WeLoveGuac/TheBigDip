@@ -134,6 +134,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   formControl: {
+    paddingLeft: '20px',
     maxHeight: '150px',
     overflow: 'auto'
   }
