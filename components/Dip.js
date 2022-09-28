@@ -160,7 +160,7 @@ const Dip = () => {
     }, 1000);
   };
 
-  const imgArr = [
+  const [imgArr, setImgArr] = useState([
     {
       id: 'queso',
       url1: 'dipchip1.png',
@@ -179,7 +179,7 @@ const Dip = () => {
       url2: 'salsabowl.png',
       color: '#500912'
     }
-  ]
+  ]);
 
   const [checkList, setCheckList] = useState([]); // array for checked ones
 
@@ -267,9 +267,48 @@ const Dip = () => {
         })
       })
       setCheckboxArr(availableTokens);
+
     }
 
     fetchData();
+  }
+
+  const [bal, setBal] = useState([]);
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  useEffect(() => {
+    if (web3) {
+      (async () => {
+        let provider = new ethers.providers.Web3Provider(web3.currentProvider);
+        const _signer = provider.getSigner();
+        const guacContract = new ethers.Contract(Config.GUAC_ADDRESS, Config.GUAC_ABI, _signer);
+        const guacBal = await guacContract.balanceOf(Config.CONTRACT_ADDRESS);
+
+        const salsaContract = new ethers.Contract(Config.SALSA_ADDRESS, Config.SALSA_ABI, _signer);
+        const salsaBal = await salsaContract.balanceOf(Config.CONTRACT_ADDRESS);
+
+        const quesoContract = new ethers.Contract(Config.QUESO_ADDRESS, Config.QUESO_ABI, _signer);
+        const quesoBal = await quesoContract.balanceOf(Config.CONTRACT_ADDRESS);
+        console.log(guacBal + 0);
+        setBal([parseInt(guacBal) / 10 ** 18 - 208260, parseInt(salsaBal) / 10 ** 18 - 208260, parseInt(quesoBal) / 10 ** 18 - 208260]);
+      })()
+    }
+  }, [web3]);
+
+  const renderSwitch = (param) => {
+    switch (param) {
+      case 'queso':
+        return bal[2];
+      case 'salsa':
+        return bal[1];
+      case 'guac':
+        return bal[0];
+      default:
+        return null;
+    }
   }
 
   const [checkboxArr, setCheckboxArr] = useState([]);
@@ -295,6 +334,7 @@ const Dip = () => {
             <img className={classes.dip} src={elem.url1}></img>
             <img className={classes.bowl} src={elem.url2}></img>
             <Typography className={classes.chipTitle} style={{ color: elem.color }}>{elem.id}</Typography>
+            <Typography className={classes.chipTitle} style={{ color: elem.color, textAlign: 'center', textTransform: 'lowercase', fontSize: '18px', fontStyle: 'italic' }}>{numberWithCommas(renderSwitch(elem.id))}/69,420 {elem.id}</Typography>
           </Box>
         })}
       </Box>
