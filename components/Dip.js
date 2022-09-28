@@ -197,8 +197,17 @@ const Dip = () => {
 
       const contract = new ethers.Contract(Config.CONTRACT_ADDRESS, abi, _signer)
       const battleStatus = await contract.battleStatus();
+      let tokenId;
+      if (selectedDip == 'guac') {
+        tokenId = 0
+      } else if (selectedDip == 'queso') {
+        tokenId = 1
+      } else {
+        tokenId = 2
+      }
+
       if (battleStatus) {
-        const transaction = await contract.scoop(Array(checkList.length).fill(Config.GUAC_ADDRESS), checkList);
+        const transaction = await contract.scoop(Array(checkList.length).fill(tokenId), checkList);
         const finishTxn = await transaction.wait();
         setDipped(true);
       } else {
