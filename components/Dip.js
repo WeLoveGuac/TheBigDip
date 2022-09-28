@@ -1,5 +1,5 @@
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { Container, Typography, Box, Button, Backdrop, Modal, Fade, Radio, FormGroup, Checkbox, FormControlLabel, FormControl } from "@material-ui/core";
+import { Container, Typography, Grid, Box, Button, Backdrop, Modal, Fade, Radio, FormGroup, Checkbox, FormControlLabel, FormControl } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
@@ -137,7 +137,38 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '20px',
     maxHeight: '150px',
     overflow: 'auto'
-  }
+  },
+  bottomSection: {
+    margin: '50px 0',
+    borderTop: "5px solid #fff9ad"
+  },
+  metamaskTitle: {
+    marginTop: '20px',
+    fontWeight: "bold",
+    fontSize: "25px",
+    lineHeight: "1.5",
+    color: "#fff9ad",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "22px",
+    }
+  },
+  boldTitle: {
+    fontWeight: "bold",
+    fontSize: "22px",
+    lineHeight: "1.5",
+    color: "rgb(210, 159, 77)",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "20px",
+    }
+  },
+  addressList: {
+    fontSize: "18px",
+    lineHeight: "1.5",
+    color: "rgb(210, 159, 77)",
+    [theme.breakpoints.down("xs")]: {
+      fontSize: "14px",
+    }
+  },
 }));
 
 const Dip = () => {
@@ -345,6 +376,23 @@ const Dip = () => {
             )}
           </Box>
         })}
+      </Box>
+      <Box className={classes.bottomSection}>
+        <Typography className={classes.metamaskTitle}>Add contracts to metamask</Typography>
+        <Grid container>
+          <Grid item md={6}>
+            <Typography className={classes.boldTitle}>ETH</Typography>
+            <Typography className={classes.addressList}>GUAC: 0x1772114243BF9436bEFAAd63a7c4E4C75Adc80c2</Typography>
+            <Typography className={classes.addressList}>SALSA: 0x9024649Ee691AcAB13ff2FBCFaEEF24419863d81</Typography>
+            <Typography className={classes.addressList}>QUESO: 0x570bF1DEC86E9863CaDC6208d1E6e4d357109000</Typography>
+          </Grid>
+          <Grid item md={6}>
+            <Typography className={classes.boldTitle}>POLYGON</Typography>
+            <Typography className={classes.addressList}>WGUAC: 0xaedc0DDeEF17Ce79DaaA800e434bd49679F9d4F8</Typography>
+            <Typography className={classes.addressList}>WSALSA: 0x4E16ce724dE731b3Aaf794De9f9673F0EFF2CB42</Typography>
+            <Typography className={classes.addressList}>WQUESO: 0x87475d320368B578Bf365DF21E7FecF590146F2e</Typography>
+          </Grid>
+        </Grid>
       </Box>
       <Modal
         aria-labelledby="transition-modal-title"
