@@ -219,7 +219,13 @@ const Dip = () => {
     fetchData();
   }
 
+  const [loading, setLoading] = useState(false);
+
   const tasty = () => {
+    setDipped(false);
+    setCheckList([]);
+
+    setLoading(true);
     async function fetchData() {
       let provider = new ethers.providers.Web3Provider(web3.currentProvider);
       const _signer = provider.getSigner();
@@ -234,12 +240,10 @@ const Dip = () => {
         })
       })
       setCheckboxArr(availableTokens);
+      setLoading(false);
     }
 
     fetchData();
-
-    setDipped(false);
-    setCheckList([]);
   }
 
   const [selectedDip, setSelectedDip] = useState(); // selected dip category
@@ -255,6 +259,7 @@ const Dip = () => {
     setOpen(true);
 
     async function fetchData() {
+      setLoading(true);
       let provider = new ethers.providers.Web3Provider(web3.currentProvider);
       const _signer = provider.getSigner();
       const contract = new ethers.Contract("0x81A56C6249C0bA68ef3f703A3Fd53B3bD4c19a8D", abi, _signer)
@@ -268,7 +273,7 @@ const Dip = () => {
         })
       })
       setCheckboxArr(availableTokens);
-
+      setLoading(false);
     }
 
     fetchData();
@@ -360,22 +365,34 @@ const Dip = () => {
                 <Typography className={classes.selectModalTitle}>
                   Please select each chip you would like to dip in <span style={{ textTransform: 'capitalize' }}>{selectedDip}</span>
                 </Typography>
-                <FormControl component="fieldset" className={classes.formControl}>
-                  {checkboxArr.map(elem => {
-                    return <FormControlLabel
-                      key={elem.id}
-                      control={
-                        <CustomCheckbox
-                          value={elem.id}
-                          onChange={e => handleChange(e)}
-                          checked={
-                            checkList.lastIndexOf(Number(elem.id)) >= 0 ? true : false
+                {loading ? (
+                  <Typography className={classes.selectModalTitle}>
+                    Loading....
+                  </Typography>
+                ) : (
+                  checkboxArr.length ? (
+                    <FormControl component="fieldset" className={classes.formControl}>
+                      {checkboxArr.map(elem => {
+                        return <FormControlLabel
+                          key={elem.id}
+                          control={
+                            <CustomCheckbox
+                              value={elem.id}
+                              onChange={e => handleChange(e)}
+                              checked={
+                                checkList.lastIndexOf(Number(elem.id)) >= 0 ? true : false
+                              }
+                              name={elem.name} />
                           }
-                          name={elem.name} />
-                      }
-                      label={elem.name} />
-                  })}
-                </FormControl>
+                          label={elem.name} />
+                      })}
+                    </FormControl>
+                  ) : (
+                    <Typography className={classes.selectModalTitle}>
+                      You're out of chips! Come back next Taco Tuesday!
+                    </Typography>
+                  )
+                )}
                 <Box mt="20px" display='flex' justifyContent='center'>
                   <Button variant="contained" color="primary" onClick={dipChip}>
                     Dip it
