@@ -162,7 +162,7 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   addressList: {
-    fontSize: "18px",
+    fontSize: "16px",
     lineHeight: "1.5",
     color: "rgb(210, 159, 77)",
     [theme.breakpoints.down("xs")]: {
@@ -216,45 +216,43 @@ const Dip = () => {
 
   const [dipped, setDipped] = useState(false) // dipped state
 
-  const addTokens = () => {
+  const tokenList = [{
+    tokenAddress: Config.GUAC_ADDRESS,
+    tokenSymbol: "WGUAC",
+    tokenDecimals: 18
+  }, {
+    tokenAddress: Config.SALSA_ADDRESS,
+    tokenSymbol: "WSALSA",
+    tokenDecimals: 18
+  }, {
+    tokenAddress: Config.QUESO_ADDRESS,
+    tokenSymbol: "WQUESO",
+    tokenDecimals: 18
+  }]
+
+  const addTokens = async (token) => {
     if (!address) {
       toast.error(`Connect your wallet!`)
       return;
     }
 
-    const tokens = [{
-      tokenAddress: Config.GUAC_ADDRESS,
-      tokenSymbol: "WGUAC",
-      tokenDecimals: 18
-    }, {
-      tokenAddress: Config.SALSA_ADDRESS,
-      tokenSymbol: "WSALSA",
-      tokenDecimals: 18
-    }, {
-      tokenAddress: Config.QUESO_ADDRESS,
-      tokenSymbol: "WQUESO",
-      tokenDecimals: 18
-    }]
-
     if (web3) {
-      tokens.map(async (elem) => {
-        try {
-          const isAdded = await web3.currentProvider.request({
-            method: 'wallet_watchAsset',
-            params: {
-              type: 'ERC20',
-              options: {
-                address: elem.tokenAddress,
-                symbol: elem.tokenSymbol,
-                decimals: elem.tokenDecimals,
-              },
+      try {
+        const isAdded = await web3.currentProvider.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: token.tokenAddress,
+              symbol: token.tokenSymbol,
+              decimals: token.tokenDecimals,
             },
-          });
-          toast.success('ADDED!')
-        } catch (error) {
-          toast.error('FAILED!')
-        }
-      })
+          },
+        });
+        isAdded && toast.success('ADDED!')
+      } catch (error) {
+        toast.error('FAILED!')
+      }
     }
   }
 
@@ -427,10 +425,10 @@ const Dip = () => {
             <Typography className={classes.addressList}>QUESO: 0x570bF1DEC86E9863CaDC6208d1E6e4d357109000</Typography>
           </Grid>
           <Grid item md={6}>
-            <Typography className={classes.boldTitle}>POLYGON <Button style={{ border: '1px solid rgb(210, 159, 77)', padding: '5px', fontSize: '10px', lineHeight: '1.1' }} onClick={addTokens}>Click for adding tokens easily</Button> </Typography>
-            <Typography className={classes.addressList}>WGUAC: 0xaedc0DDeEF17Ce79DaaA800e434bd49679F9d4F8</Typography>
-            <Typography className={classes.addressList}>WSALSA: 0x4E16ce724dE731b3Aaf794De9f9673F0EFF2CB42</Typography>
-            <Typography className={classes.addressList}>WQUESO: 0x87475d320368B578Bf365DF21E7FecF590146F2e</Typography>
+            <Typography className={classes.boldTitle}>POLYGON</Typography>
+            {tokenList.map(elem => {
+              return <Typography key={elem.tokenAddress} className={classes.addressList}>{elem.tokenSymbol}: {elem.tokenAddress}<br></br><Button style={{ border: '1px solid rgb(210, 159, 77)', padding: '5px', fontSize: '10px', lineHeight: '1.1' }} onClick={() => addTokens(elem)}>Add Token To Metamask</Button></Typography>
+            })}
           </Grid>
         </Grid>
       </Box>
