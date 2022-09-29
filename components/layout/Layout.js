@@ -7,9 +7,9 @@ import { ToastContainer } from 'react-toastify';
 const Layout = ({ children, title, description, ogImage, url }) => {
   // website Url
   const pageUrl =
-    "https://twitter.com/FlipperDotGG";
+    "https://twitter.com/justbluechips";
   // when you share this page on facebook you'll see this image
-  const ogImg = "https://pbs.twimg.com/profile_images/1509469939274461187/IRpGaACh_400x400.png";
+  const ogImg = "https://dip.weloveguac.org/photo_2022-09-29_09-26-57.jpg";
   return (
     <>
       <Head>
