@@ -1,5 +1,5 @@
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { Container, Typography, Grid, Box, Button, Backdrop, Modal, Fade, Radio, FormGroup, Checkbox, FormControlLabel, FormControl } from "@material-ui/core";
+import { Container, Typography, Grid, Box, Button, Backdrop, Modal, Fade, Checkbox, FormControlLabel, FormControl } from "@material-ui/core";
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
@@ -175,7 +175,6 @@ const Dip = () => {
   const classes = useStyles();
   const {
     address,
-    balance,
     web3
   } = useSelector(state => state.ConnectWallet);
 
@@ -217,9 +216,51 @@ const Dip = () => {
 
   const [dipped, setDipped] = useState(false) // dipped state
 
+  const addTokens = () => {
+    if (!address) {
+      toast.error(`Connect your wallet!`)
+      return;
+    }
+
+    const tokens = [{
+      tokenAddress: Config.GUAC_ADDRESS,
+      tokenSymbol: "WGUAC",
+      tokenDecimals: 18
+    }, {
+      tokenAddress: Config.SALSA_ADDRESS,
+      tokenSymbol: "WSALSA",
+      tokenDecimals: 18
+    }, {
+      tokenAddress: Config.QUESO_ADDRESS,
+      tokenSymbol: "WQUESO",
+      tokenDecimals: 18
+    }]
+
+    if (web3) {
+      tokens.map(async (elem) => {
+        try {
+          const isAdded = await web3.currentProvider.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20',
+              options: {
+                address: elem.tokenAddress,
+                symbol: elem.tokenSymbol,
+                decimals: elem.tokenDecimals,
+              },
+            },
+          });
+          toast.success('ADDED!')
+        } catch (error) {
+          toast.error('FAILED!')
+        }
+      })
+    }
+  }
+
   const dipChip = () => {
     if (!checkList.length) {
-      toast.error(`Choose at least one Dip!`);
+      toast.error(`Choose at least one chip!`);
       return;
     }
 
@@ -329,7 +370,6 @@ const Dip = () => {
 
         const quesoContract = new ethers.Contract(Config.QUESO_ADDRESS, Config.QUESO_ABI, _signer);
         const quesoBal = await quesoContract.balanceOf(Config.CONTRACT_ADDRESS);
-        console.log(guacBal + 0);
         setBal([parseInt(guacBal) / 10 ** 18 - 208260, parseInt(salsaBal) / 10 ** 18 - 208260, parseInt(quesoBal) / 10 ** 18 - 208260]);
       })()
     }
@@ -387,7 +427,7 @@ const Dip = () => {
             <Typography className={classes.addressList}>QUESO: 0x570bF1DEC86E9863CaDC6208d1E6e4d357109000</Typography>
           </Grid>
           <Grid item md={6}>
-            <Typography className={classes.boldTitle}>POLYGON</Typography>
+            <Typography className={classes.boldTitle}>POLYGON <Button style={{ border: '1px solid rgb(210, 159, 77)', padding: '5px', fontSize: '10px', lineHeight: '1.1' }} onClick={addTokens}>Click for adding tokens easily</Button> </Typography>
             <Typography className={classes.addressList}>WGUAC: 0xaedc0DDeEF17Ce79DaaA800e434bd49679F9d4F8</Typography>
             <Typography className={classes.addressList}>WSALSA: 0x4E16ce724dE731b3Aaf794De9f9673F0EFF2CB42</Typography>
             <Typography className={classes.addressList}>WQUESO: 0x87475d320368B578Bf365DF21E7FecF590146F2e</Typography>
