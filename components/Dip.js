@@ -219,15 +219,18 @@ const Dip = () => {
   const tokenList = [{
     tokenAddress: Config.GUAC_ADDRESS,
     tokenSymbol: "WGUAC",
-    tokenDecimals: 18
+    tokenDecimals: 18,
+    tokenImage: "https://dip.weloveguac.org/guacbowl.png"
   }, {
     tokenAddress: Config.SALSA_ADDRESS,
     tokenSymbol: "WSALSA",
-    tokenDecimals: 18
+    tokenDecimals: 18,
+    tokenImage: "https://dip.weloveguac.org/salsabowl.png"
   }, {
     tokenAddress: Config.QUESO_ADDRESS,
     tokenSymbol: "WQUESO",
-    tokenDecimals: 18
+    tokenDecimals: 18,
+    tokenImage: "https://dip.weloveguac.org/quesobowl.png"
   }]
 
   const addTokens = async (token) => {
@@ -246,6 +249,7 @@ const Dip = () => {
               address: token.tokenAddress,
               symbol: token.tokenSymbol,
               decimals: token.tokenDecimals,
+              image: token.tokenImage
             },
           },
         });
