@@ -9,7 +9,7 @@ const Layout = ({ children, title, description, ogImage, url }) => {
   const pageUrl =
     "https://twitter.com/justbluechips";
   // when you share this page on facebook you'll see this image
-  const ogImg = "https://dip.weloveguac.org/photo_2022-09-29_09-26-57.jpg";
+  const ogImg = "favicon.ico";
   return (
     <>
       <Head>
