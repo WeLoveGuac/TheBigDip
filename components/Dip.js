@@ -235,7 +235,7 @@ const Dip = () => {
 
   const addTokens = async (token) => {
     if (!address) {
-      toast.error(`Connect your wallet!`)
+      toast.warn(`Connect your wallet!`)
       return;
     }
 
@@ -324,7 +324,7 @@ const Dip = () => {
 
   const chooseDip = (event) => {
     if (!address) {
-      toast.error(`Connect your wallet!`)
+      toast.warn(`Connect your wallet!`)
       return;
     }
 
@@ -356,7 +356,7 @@ const Dip = () => {
   const [bal, setBal] = useState([]);
 
   const numberWithCommas = (x) => {
-    return x && x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return x && Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   useEffect(() => {
