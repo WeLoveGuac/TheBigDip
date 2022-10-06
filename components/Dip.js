@@ -303,7 +303,7 @@ const Dip = () => {
         async function fetchData() {
             let provider = new ethers.providers.Web3Provider(web3.currentProvider);
             const _signer = provider.getSigner();
-            const contract = new ethers.Contract("0x81A56C6249C0bA68ef3f703A3Fd53B3bD4c19a8D", abi, _signer)
+            const contract = new ethers.Contract("0xF4dA61152A9A5A26e9014A60fE0a49955e02ADE9", abi, _signer)
 
             const availableTokenIds = await contract.availableTokensOfOwner(address);
             let availableTokens = []
@@ -336,7 +336,7 @@ const Dip = () => {
             setLoading(true);
             let provider = new ethers.providers.Web3Provider(web3.currentProvider);
             const _signer = provider.getSigner();
-            const contract = new ethers.Contract("0x81A56C6249C0bA68ef3f703A3Fd53B3bD4c19a8D", abi, _signer)
+            const contract = new ethers.Contract("0xF4dA61152A9A5A26e9014A60fE0a49955e02ADE9", abi, _signer)
 
             const availableTokenIds = await contract.availableTokensOfOwner(address);
             let availableTokens = []
