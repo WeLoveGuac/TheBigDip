@@ -276,9 +276,9 @@ const Dip = () => {
             if (selectedDip == 'guac') {
                 tokenId = 0
             } else if (selectedDip == 'queso') {
-                tokenId = 1
-            } else {
                 tokenId = 2
+            } else {
+                tokenId = 1
             }
 
             if (battleStatus) {
