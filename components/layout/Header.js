@@ -36,6 +36,7 @@ import Config from '../../public/config/Config.json';
 import Web3 from 'web3'
 import { useDispatch, useSelector } from 'react-redux';
 import WalletConnectActions from '../../store/actions/walletconnect.actions';
+import Menus from "components/Menus";
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -309,22 +310,7 @@ const Header = () => {
             <Typography className={classes.logo}><img height={50} src="logo-chip.png"></img></Typography>
           </Link>
         </Box>
-        <Box>
-          <Grid container spacing={4}>
-            {path.map(({ name, link }) => (
-              <Grid item key={link}>
-                <Link target="_blank" href={link} style={{ textDecoration: "none", cursor: "pointer" }}>
-                  <Typography
-                    className={classes.link}
-                    variant="h1"
-                  >
-                    {name}
-                  </Typography>
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <Menus></Menus>
       </Box>
       <Box display="flex" alignItems="center" style={{ paddingRight: "40px" }}>
         {address ? (
@@ -352,22 +338,7 @@ const Header = () => {
             <Typography className={classes.logo}><img height={50} src="logo-chip.png"></img></Typography>
           </Link>
         </Box>
-        <Box>
-          <Grid container spacing={4}>
-            {path.map(({ name, link }) => (
-              <Grid item key={link}>
-                <Link target="_blank" href={link} style={{ textDecoration: "none", cursor: "pointer" }}>
-                  <Typography
-                    className={classes.link}
-                    variant="h1"
-                  >
-                    {name}
-                  </Typography>
-                </Link>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <Menus></Menus>
       </Box>
 
       <SwipeableDrawer
