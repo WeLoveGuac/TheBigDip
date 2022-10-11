@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '100px',
         textAlign: 'center',
         [theme.breakpoints.down("xs")]: {
-            paddingTop: '70px',
+            paddingTop: '20px',
             fontSize: '30px',
             lineHeight: '1.3'
         }

@@ -1,6 +1,31 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    timer: {
+        position: 'absolute',
+        marginTop: '10px',
+        right: '30px',
+        fontFamily: "BreviaBold",
+        lineHeight: '1.5',
+        fontWeight: '400',
+        color: '#fff9ad',
+        fontSize: '20px',
+        textAlign: 'center',
+        [theme.breakpoints.down("xs")]: {
+            position: 'relative',
+            right: '0px',
+            fontSize: '14px',
+            marginTop: '30px',
+            lineHeight: '1',
+            marginBottom: '0'
+        }
+    }
+}));
 
 export default function CountDown({ days = 0, hours = 0, minutes = 0, seconds = 0 }) {
+    const classes = useStyles();
+
     const [paused, setPaused] = React.useState(false);
     const [over, setOver] = React.useState(false);
     const [time, setTime] = React.useState({
@@ -50,24 +75,14 @@ export default function CountDown({ days = 0, hours = 0, minutes = 0, seconds = 
     });
 
     return (
-        <div style={{
-            position: 'absolute',
-            right: '30px',
-            fontFamily: "BreviaBold",
-            lineHeight: '1.5',
-            fontWeight: '400',
-            color: '#fff9ad',
-            fontSize: '20px',
-            textAlign: 'center',
-            marginBottom: '20px'
-        }}>
-            <p>{`${time.days
+        <div className={classes.timer}>
+            {`${time.days
                 .toString()
                 .padStart(1, "0")} days : ${time.hours
                     .toString()
                     .padStart(2, "0")} hours : ${time.minutes
                         .toString()
-                        .padStart(2, "0")} mins : ${time.seconds.toString().padStart(2, "0")} secs`}</p>
+                        .padStart(2, "0")} mins : ${time.seconds.toString().padStart(2, "0")} secs`}
         </div>
     );
 }
