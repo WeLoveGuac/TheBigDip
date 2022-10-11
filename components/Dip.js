@@ -124,6 +124,16 @@ const useStyles = makeStyles((theme) => ({
             marginTop: '0px',
         }
     },
+    chipTitle1: {
+        marginTop: '5px',
+        fontWeight: "bold",
+        fontSize: "25px",
+        textTransform: 'uppercase',
+        lineHeight: "1.5",
+        [theme.breakpoints.down("xs")]: {
+            marginTop: '0px',
+        }
+    },
     mainContainer: {
         display: "flex",
         justifyContent: 'center',
@@ -365,6 +375,8 @@ const Dip = () => {
         return x && Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    const [userTokenBalance, setUserTokenBalance] = useState([]);
+
     useEffect(() => {
         if (web3) {
             (async () => {
@@ -372,13 +384,18 @@ const Dip = () => {
                 const _signer = provider.getSigner();
                 const guacContract = new ethers.Contract(Config.GUAC_ADDRESS, Config.GUAC_ABI, _signer);
                 const guacBal = await guacContract.balanceOf(Config.CONTRACT_ADDRESS);
+                const userGuacBal = await guacContract.balanceOf(address); // user token balance
 
                 const salsaContract = new ethers.Contract(Config.SALSA_ADDRESS, Config.SALSA_ABI, _signer);
                 const salsaBal = await salsaContract.balanceOf(Config.CONTRACT_ADDRESS);
+                const userSalsaBal = await salsaContract.balanceOf(address); // user token balance
 
                 const quesoContract = new ethers.Contract(Config.QUESO_ADDRESS, Config.QUESO_ABI, _signer);
                 const quesoBal = await quesoContract.balanceOf(Config.CONTRACT_ADDRESS);
+                const userQuesoBal = await quesoContract.balanceOf(address); // user token balance
+
                 setBal([parseInt(guacBal) / 10 ** 18 - (217462 - 69420), parseInt(salsaBal) / 10 ** 18 - (240337 - 69420), parseInt(quesoBal) / 10 ** 18 - (249687 - 69420)]);
+                setUserTokenBalance([parseInt(userGuacBal) / 10 ** 18, parseInt(userSalsaBal) / 10 ** 18, parseInt(userQuesoBal) / 10 ** 18]);
             })()
         }
     }, [web3]);
@@ -391,6 +408,19 @@ const Dip = () => {
                 return bal[1];
             case 'guac':
                 return bal[0];
+            default:
+                return null;
+        }
+    }
+
+    const userTokenSwitch = (param) => {
+        switch (param) {
+            case 'queso':
+                return userTokenBalance[2];
+            case 'salsa':
+                return userTokenBalance[1];
+            case 'guac':
+                return userTokenBalance[0];
             default:
                 return null;
         }
@@ -470,9 +500,16 @@ const Dip = () => {
                         <img className={classes.dip} src={elem.url1}></img>
                         <img className={classes.bowl} src={elem.url2}></img>
                         <Typography className={classes.chipTitle} style={{ color: elem.color }}>{elem.id}</Typography>
-                        {renderSwitch(elem.id) && (
-                            <Typography className={classes.chipTitle} style={{ color: elem.color, textAlign: 'center', textTransform: 'lowercase', fontSize: '18px', fontStyle: 'italic' }}>{numberWithCommas(renderSwitch(elem.id))}/69,420 {elem.id}</Typography>
-                        )}
+                        {
+                            renderSwitch(elem.id) && (
+                                <Typography className={classes.chipTitle1} style={{ color: elem.color, textAlign: 'center', textTransform: 'lowercase', fontSize: '18px', fontStyle: 'italic' }}>{numberWithCommas(renderSwitch(elem.id))}/69,420 {elem.id}</Typography>
+                            )
+                        }
+                        {
+                            address && (
+                                <Typography className={classes.chipTitle1} style={{ color: elem.color, textAlign: 'center', textTransform: 'capitalize', fontSize: '18px', fontStyle: 'italic' }}>Your {elem.id}: {numberWithCommas(userTokenSwitch(elem.id))} </Typography>
+                            )
+                        }
                     </Box>
                 })}
             </Box>
