@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import abi from '../public/config/abi.json';
 import Config from '../public/config/Config.json';
+import CountDown from "./Timer";
 
 const CustomCheckbox = withStyles({
     root: {
@@ -69,10 +70,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '50px',
         fontWeight: "500",
         color: '#fff9ad',
-        marginTop: '100px',
+        paddingTop: '100px',
         textAlign: 'center',
         [theme.breakpoints.down("xs")]: {
-            marginTop: '70px',
+            paddingTop: '70px',
             fontSize: '30px',
             lineHeight: '1.3'
         }
@@ -261,6 +262,11 @@ const Dip = () => {
     }
 
     const dipChip = () => {
+        if (!loading && !checkboxArr.length) {
+            setOpen(false);
+            return;
+        }
+
         if (!checkList.length) {
             toast.error(`Choose at least one chip!`);
             return;
@@ -404,8 +410,59 @@ const Dip = () => {
         }
     };
 
+    const [time, setTime] = useState(null);
+
+    useEffect(() => {
+        const nextDayAndTime = (dayOfWeek, hour, minute) => {
+            var now = new Date()
+            var result = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate() + (7 + dayOfWeek - now.getDay()) % 7,
+                hour,
+                minute)
+
+            if (result < now)
+                result.setDate(result.getDate() + 7)
+
+            return result
+        }
+
+        const changeTimezone = (date, ianatz) => {
+
+            // suppose the date is 12:00 UTC
+            var invdate = new Date(date.toLocaleString('en-US', {
+                timeZone: ianatz
+            }));
+
+            // then invdate will be 07:00 in Toronto
+            // and the diff is 5 hours
+            var diff = date.getTime() - invdate.getTime();
+
+            // so 12:00 in Toronto is 17:00 UTC
+            return new Date(date.getTime() - diff); // needs to substract
+        }
+
+        let nextTues = nextDayAndTime(2, 9, 0);
+        let timezoneChanged = changeTimezone(nextTues, "America/Toronto");
+
+        let diffTime = Math.abs(timezoneChanged.valueOf() - new Date().valueOf());
+        let days = diffTime / (24 * 60 * 60 * 1000);
+        let hours = (days % 1) * 24;
+        let minutes = (hours % 1) * 60;
+        let secs = (minutes % 1) * 60;
+        [days, hours, minutes, secs] = [Math.floor(days), Math.floor(hours), Math.floor(minutes), Math.floor(secs)];
+        setTime({
+            days: parseInt(days),
+            hours: parseInt(hours),
+            minutes: parseInt(minutes),
+            seconds: parseInt(secs)
+        });
+    }, [])
+
     return (
         <Container>
+            {time && <CountDown days={time.days} hours={time.hours} minutes={time.minutes} seconds={time.seconds} />}
             <Typography className={classes.title}>CHOOSE YOUR DIP</Typography>
             <Box className={classes.mainContainer}>
                 {imgArr.map((elem, index) => {
@@ -445,7 +502,7 @@ const Dip = () => {
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
-                    timeout: 500,
+                    timeout: 1000,
                 }}
             >
                 <Fade in={open}>
@@ -485,7 +542,7 @@ const Dip = () => {
                                 )}
                                 <Box mt="20px" display='flex' justifyContent='center'>
                                     <Button variant="contained" color="primary" onClick={dipChip}>
-                                        Dip it
+                                        {(!loading && !checkboxArr.length) ? 'Lick Your FIngers' : 'Dip it'}
                                     </Button>
                                 </Box>
                             </>
