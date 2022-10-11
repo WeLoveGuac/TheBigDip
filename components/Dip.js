@@ -378,7 +378,7 @@ const Dip = () => {
 
                 const quesoContract = new ethers.Contract(Config.QUESO_ADDRESS, Config.QUESO_ABI, _signer);
                 const quesoBal = await quesoContract.balanceOf(Config.CONTRACT_ADDRESS);
-                setBal([parseInt(guacBal) / 10 ** 18 - (250140 - 69420), parseInt(salsaBal) / 10 ** 18 - (265440 - 69420), parseInt(quesoBal) / 10 ** 18 - (263400 - 69420)]);
+                setBal([parseInt(guacBal) / 10 ** 18 - (217462 - 69420), parseInt(salsaBal) / 10 ** 18 - (240337 - 69420), parseInt(quesoBal) / 10 ** 18 - (249687 - 69420)]);
             })()
         }
     }, [web3]);
