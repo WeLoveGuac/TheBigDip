@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     timer: {
+        textAlign: 'left',
         position: 'absolute',
         marginTop: '10px',
         right: '30px',
@@ -11,10 +12,11 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '400',
         color: '#fff9ad',
         fontSize: '20px',
-        textAlign: 'center',
+        minWidth: '380px',
         [theme.breakpoints.down("xs")]: {
             position: 'relative',
             right: '0px',
+            textAlign: 'center',
             fontSize: '14px',
             marginTop: '30px',
             lineHeight: '1',
@@ -76,6 +78,7 @@ export default function CountDown({ days = 0, hours = 0, minutes = 0, seconds = 
 
     return (
         <div className={classes.timer}>
+            Time Until Dip Reset: <br></br>
             {`${time.days
                 .toString()
                 .padStart(1, "0")} days : ${time.hours
