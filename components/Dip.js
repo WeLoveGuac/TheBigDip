@@ -476,7 +476,7 @@ const Dip = () => {
         let nextTues = nextDayAndTime(2, 9, 0);
         let timezoneChanged = changeTimezone(nextTues, "America/Toronto");
 
-        let diffTime = Math.abs(timezoneChanged.valueOf() - new Date().valueOf());
+        let diffTime = Math.abs(timezoneChanged.valueOf() - changeTimezone(new Date(), "America/Toronto").valueOf());
         let days = diffTime / (24 * 60 * 60 * 1000);
         let hours = (days % 1) * 24;
         let minutes = (hours % 1) * 60;

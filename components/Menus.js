@@ -3,11 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
 import { Link } from '@material-ui/core';
 
 const StyledMenu = withStyles({
@@ -27,6 +23,7 @@ const StyledMenu = withStyles({
       horizontal: 'center',
     }}
     {...props}
+    disableScrollLock={true}
   />
 ));
 
@@ -80,12 +77,6 @@ export default function Menus() {
             <ListItemText primary="The Blue Chips (Expansion)" />
           </Link>
         </StyledMenuItem>
-        {/* <StyledMenuItem>
-          <ListItemIcon>
-            <InboxIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Inbox" />
-        </StyledMenuItem> */}
       </StyledMenu>
     </div>
   );
