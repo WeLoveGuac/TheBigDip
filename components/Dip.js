@@ -500,6 +500,7 @@ const Dip = () => {
                         <img className={classes.dip} src={elem.url1}></img>
                         <img className={classes.bowl} src={elem.url2}></img>
                         <Typography className={classes.chipTitle} style={{ color: elem.color }}>{elem.id}</Typography>
+                        {(elem.id == 'queso') ? <span style={{ color: 'rgb(210, 159, 77)' }}>(vegan options available)</span> : <br />}
                         {
                             renderSwitch(elem.id) && (
                                 <Typography className={classes.chipTitle1} style={{ color: elem.color, textAlign: 'center', textTransform: 'lowercase', fontSize: '18px', fontStyle: 'italic' }}>{numberWithCommas(renderSwitch(elem.id))}/69,420 {elem.id}</Typography>
@@ -507,7 +508,7 @@ const Dip = () => {
                         }
                         {
                             address && (
-                                <Typography className={classes.chipTitle1} style={{ color: elem.color, textAlign: 'center', textTransform: 'capitalize', fontSize: '18px', fontStyle: 'italic' }}>Your {elem.id}: {numberWithCommas(userTokenSwitch(elem.id))} </Typography>
+                                <Typography className={classes.chipTitle1} style={{ color: '#fff9ad', textAlign: 'center', textTransform: 'capitalize', fontSize: '18px', fontStyle: 'italic' }}>Your {elem.id}: {numberWithCommas(userTokenSwitch(elem.id))} </Typography>
                             )
                         }
                     </Box>
