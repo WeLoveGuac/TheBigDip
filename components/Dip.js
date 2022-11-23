@@ -244,29 +244,79 @@ const Dip = () => {
         tokenImage: "https://dip.weloveguac.org/quesobowl.png"
     }]
 
-    const addTokens = async (token) => {
+    const tokenList1 = [{
+        tokenAddress: '0x1772114243BF9436bEFAAd63a7c4E4C75Adc80c2',
+        tokenSymbol: "GUAC",
+        tokenDecimals: 18,
+        tokenImage: "https://dip.weloveguac.org/guacbowl.png"
+    }, {
+        tokenAddress: '0x9024649Ee691AcAB13ff2FBCFaEEF24419863d81',
+        tokenSymbol: "SALSA",
+        tokenDecimals: 18,
+        tokenImage: "https://dip.weloveguac.org/salsabowl.png"
+    }, {
+        tokenAddress: '0x570bF1DEC86E9863CaDC6208d1E6e4d357109000',
+        tokenSymbol: "QUESO",
+        tokenDecimals: 18,
+        tokenImage: "https://dip.weloveguac.org/quesobowl.png"
+    }]
+
+    const addTokens = async (token, network) => {
         if (!address) {
             toast.warn(`Connect your wallet!`)
             return;
         }
 
-        if (web3) {
-            try {
-                const isAdded = await web3.currentProvider.request({
-                    method: 'wallet_watchAsset',
-                    params: {
-                        type: 'ERC20',
-                        options: {
-                            address: token.tokenAddress,
-                            symbol: token.tokenSymbol,
-                            decimals: token.tokenDecimals,
-                            image: token.tokenImage
+        if (network == 137) {
+
+            if (web3) {
+                try {
+                    const isAdded = await web3.currentProvider.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: token.tokenAddress,
+                                symbol: token.tokenSymbol,
+                                decimals: token.tokenDecimals,
+                                image: token.tokenImage
+                            },
                         },
-                    },
+                    });
+                    isAdded && toast.success('ADDED!')
+                } catch (error) {
+                    toast.error('FAILED!')
+                }
+            }
+        } else {
+            try {
+                // check if the chain to connect to is installed
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x1' }], // chainId must be in hexadecimal numbers
                 });
-                isAdded && toast.success('ADDED!')
+
+                if (web3) {
+                    try {
+                        const isAdded = await web3.currentProvider.request({
+                            method: 'wallet_watchAsset',
+                            params: {
+                                type: 'ERC20',
+                                options: {
+                                    address: token.tokenAddress,
+                                    symbol: token.tokenSymbol,
+                                    decimals: token.tokenDecimals,
+                                    image: token.tokenImage
+                                },
+                            },
+                        });
+                        isAdded && toast.success('ADDED!')
+                    } catch (error) {
+                        toast.error('FAILED!')
+                    }
+                }
             } catch (error) {
-                toast.error('FAILED!')
+                console.log(error);
             }
         }
     }
@@ -519,14 +569,14 @@ const Dip = () => {
                 <Grid container>
                     <Grid item md={6}>
                         <Typography className={classes.boldTitle}>ETH</Typography>
-                        <Typography className={classes.addressList}>GUAC: 0x1772114243BF9436bEFAAd63a7c4E4C75Adc80c2</Typography>
-                        <Typography className={classes.addressList}>SALSA: 0x9024649Ee691AcAB13ff2FBCFaEEF24419863d81</Typography>
-                        <Typography className={classes.addressList}>QUESO: 0x570bF1DEC86E9863CaDC6208d1E6e4d357109000</Typography>
+                        {tokenList1.map(elem => {
+                            return <Typography key={elem.tokenAddress} className={classes.addressList}>{elem.tokenSymbol}: {elem.tokenAddress}<br></br><Button style={{ border: '1px solid rgb(210, 159, 77)', padding: '5px', fontSize: '10px', lineHeight: '1.1' }} onClick={() => addTokens(elem, 1)}>Add Token To Metamask</Button></Typography>
+                        })}
                     </Grid>
                     <Grid item md={6}>
                         <Typography className={classes.boldTitle}>POLYGON</Typography>
                         {tokenList.map(elem => {
-                            return <Typography key={elem.tokenAddress} className={classes.addressList}>{elem.tokenSymbol}: {elem.tokenAddress}<br></br><Button style={{ border: '1px solid rgb(210, 159, 77)', padding: '5px', fontSize: '10px', lineHeight: '1.1' }} onClick={() => addTokens(elem)}>Add Token To Metamask</Button></Typography>
+                            return <Typography key={elem.tokenAddress} className={classes.addressList}>{elem.tokenSymbol}: {elem.tokenAddress}<br></br><Button style={{ border: '1px solid rgb(210, 159, 77)', padding: '5px', fontSize: '10px', lineHeight: '1.1' }} onClick={() => addTokens(elem, 137)}>Add Token To Metamask</Button></Typography>
                         })}
                     </Grid>
                 </Grid>
