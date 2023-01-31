@@ -444,7 +444,7 @@ const Dip = () => {
                 const quesoBal = await quesoContract.balanceOf(Config.CONTRACT_ADDRESS);
                 const userQuesoBal = await quesoContract.balanceOf(address); // user token balance
 
-                setBal([parseInt(guacBal) / 10 ** 18 - (949298 - 69420), parseInt(salsaBal) / 10 ** 18 - (1095679 - 69420), parseInt(quesoBal) / 10 ** 18 - (1097626 - 69420)]);
+                setBal([parseInt(guacBal) / 10 ** 18 - (943083 - 69420), parseInt(salsaBal) / 10 ** 18 - (1091183 - 69420), parseInt(quesoBal) / 10 ** 18 - (1088900 - 69420)]);
                 setUserTokenBalance([parseInt(userGuacBal) / 10 ** 18, parseInt(userSalsaBal) / 10 ** 18, parseInt(userQuesoBal) / 10 ** 18]);
             })()
         }
